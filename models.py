@@ -1,5 +1,5 @@
 class User:
 
-    def __init__(self, transport, name):
+    def __init__(self, transport, name: str):
         self.transport = transport
-        self.name = name
+        self.name = name.strip()

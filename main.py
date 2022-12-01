@@ -1,17 +1,23 @@
 import asyncio
+from collections import defaultdict
+
+from handlers import *
+
+users = dict()
 
 
 class Server(asyncio.Protocol):
     def connection_made(self, transport):
         self.transport = transport
-        print("DEBUG")
         # self.peername = transport.get_extra_info('peername')
         # print('Connection from {}'.format(self.peername))
 
     def data_received(self, data):
         message = data.decode()
-        print(message)
-        self.transport.write(b"DEBUG")
+        try:
+            handle(self.transport, message, users)
+        except Exception as e:
+            self.transport.write((str(e) + '\n').encode(encoding='utf-8'))
 
 
 async def main():
